@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<MyCoReWebPage>
+    <section title="Publizieren" xml:lang="de"/>
+    <section title="New publication" xml:lang="en"/>
+    <section xml:lang="all">
+        <script src='../../js/mir/select-doctype.min.js'> </script>
+        <h1>Publizieren</h1>
+
+        <!-- introduction -->
+        <div class="row">
+            <div class="col-sm-12 col-md-12">
+                <p>
+                    Zur Veröffentlichung Ihres Beitrags auf INSTITUTION ist zunächst die Erfassung seiner bibliographischen
+                    Daten erforderlich. Dazu kombinieren Sie bitte aus dem zweiteiligen Auswahlmenu – so im konkreten
+                    Fall überhaupt erforderlich – die dem Typus Ihrer Publikation entsprechende Erfassungsmaske. Bitte
+                    beachten Sie, dass alle mit einen Asterisk * gekennzeichneten Felder der jeweils gewählten
+                    Erfassungsmaske verpflichtend zu befüllen sind. Für jede angemeldete Veröffentlichung übersenden
+                    Sie bitte ergänzend einen vollständig ausgefüllten und mit Ihrer elektronischen Unterschrift
+                    versehenen <a href="../rights/vertrag.pdf">Publikationsvertrag</a> an:
+                    <span class="madress">INSTITUTION [at] beispiel.de</span>
+                </p>
+            </div>
+        </div>
+
+        <form id="submit_publication"
+              class="form-horizontal"
+              role="form"
+              method="get"
+              action="../../editor/editor-dynamic.xed">
+
+            <!-- genre -->
+            <div class="row mir-form-group">
+                <label for="genre" class="col-sm-3 col-lg-2 control-label form-label">
+                    <text i18n="component.mods.genre"/>
+                </label>
+                <div class="col-sm-7 col-md-5 col-lg-4">
+          <select id="genre" class="form-control form-select" name="genre" size="1">
+                    </select>
+                </div>
+            </div>
+
+      <div class="row mir-form-group">
+        <label for="host"  class="col-sm-3 col-lg-2 control-label form-label">
+                    <text i18n="mir.select.host"/>
+                </label>
+                <div class="col-sm-7 col-md-5 col-lg-4">
+          <select id="host" class="form-control form-select" name="host" size="1">
+                    </select>
+                </div>
+            </div>
+
+      <div class="row mt-4">
+        <div class="col-lg-7 col-sm-12">
+          <h3>
+            Import publication metadata from other databases
+          </h3>
+        </div>
+      </div>
+
+      <div class="row mir-form-group">
+        <div class="col-sm-3 col-lg-2 control-label">
+          <select name="type" class="form-control form-select">
+            <option value="doi">DOI</option>
+            <option value="scopus">Scopus-ID</option>
+            <option value="pubmed">PubMed-ID</option>
+            <option value="isbn">ISBN</option>
+            <option value="issn">ISSN</option>
+            <option value="ieee">IEEE</option>
+            <option value="ppn">K10plus-PPN</option>
+            <option value="zdbid">ZDB-ID</option>
+          </select>
+        </div>
+        <div class="col-sm-7 col-md-5 col-lg-4">
+          <input class="form-control" type="text" name="modsId" />
+        </div>
+      </div>
+
+            <!-- submit -->
+            <div class="row mir-form-group mt-4">
+                <div class="col-lg-7 col-sm-12">
+                    <button type="submit" class="btn btn-primary float-end">Weiter</button>
+                </div>
+            </div>
+
+
+        </form>
+    </section>
+</MyCoReWebPage>

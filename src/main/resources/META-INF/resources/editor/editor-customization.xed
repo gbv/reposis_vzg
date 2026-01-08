@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xed:template xmlns:xed="http://www.mycore.de/xeditor" xmlns:mir="http://www.mycore.de/mir">
+
+    <!-- ========== extend editor-genres.xed ========== -->
+    <xed:modify ref="admin.fields">
+        <!-- for details see
+        https://mycore.atlassian.net/wiki/download/attachments/214695955/MyCoRe%20XEditor%20Erweiterungen%202018-11-14.pdf?api=v2
+        https://mycore.atlassian.net/wiki/download/attachments/214695955/MCR-Workshop2018_Rochowski_XEditor_Erweiterungen_Praxis.pdf?api=v2
+        https://www.mycore.de/documentation/frontend/frontend_xeditor/
+        -->
+    </xed:modify>
+
+
+    <!-- ========== validation ========== -->
+
+
+    <!-- ========== project specific templates ========== -->
+
+
+</xed:template>
+
