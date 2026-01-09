@@ -1,43 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <description>
-    <eprints xmlns="http://www.openarchives.org/OAI/1.1/eprints"
-             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-             xsi:schemaLocation="http://www.openarchives.org/OAI/1.1/eprints http://www.openarchives.org/OAI/1.1/eprints.xsd">
-
-        <comment>To set up this file read https://wiki.eprints.org/w/OAI</comment>
-        <content>
-            <text>
-                [Content]
-            </text>
-            <URL>[RepositoryURL]</URL>
-        </content>
-
-        <metadataPolicy>
-            <text>
-                [Metadata Policy]
-            </text>
-            <URL>[LicenseURL]</URL>
-        </metadataPolicy>
-
-        <dataPolicy>
-            <text>
-                [Data Policy]
-            </text>
-            <URL>[RepositoryURL]</URL>
-        </dataPolicy>
-
-        <submissionPolicy>
-            <text>
-                [Submission Policy]
-            </text>
-            <URL>[RepositoryURL]</URL>
-        </submissionPolicy>
-
-        <comment>
-            This institutional repository is powered by the MyCoRe repository software, see http://www.mycore.org/ for
-            more information.
-        </comment>
-
-    </eprints>
+  <eprints xmlns="http://www.openarchives.org/OAI/1.1/eprints"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.openarchives.org/OAI/1.1/eprints http://www.openarchives.org/OAI/1.1/eprints.xsd">
+    <content>
+      <text>
+        This repository holds Open Access publications.
+      </text>
+      <URL>https://repovzg.gbv.de</URL>
+    </content>
+    <metadataPolicy>
+      <text>
+        All bibliographic metadata provided via this interface, except abstracts, is hereby made available under CC0 license, free to share and re-use.
+      </text>
+      <URL>http://creativecommons.org/publicdomain/zero/1.0/deed.de</URL>
+    </metadataPolicy>
+    <dataPolicy>
+      <text>
+        The publications and electronic documents provided here must be used according to copyright laws, all rights reserved if not otherwise explicitly specified.
+      </text>
+      <URL>https://repovzg.gbv.de/content/publish/guidelines.xml</URL>
+    </dataPolicy>
+    <submissionPolicy>
+      <text>
+        This repository is intended to hold Open Access publications.
+      </text>
+      <URL>https://repovzg.gbv.de/content/publish/contract.xml</URL>
+    </submissionPolicy>
+    <comment>
+      This institutional repository is powered by the MyCoRe repository software, see http://www.mycore.org/ for more information.
+    </comment>
+  </eprints>
 </description>
