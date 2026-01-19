@@ -75,6 +75,28 @@
             <artifactId>mycore-pi</artifactId>
         </dependency>
         -->
+      <dependency>
+        <groupId>org.mycore</groupId>
+        <artifactId>mycore-cronjob</artifactId>
+      </dependency>
+      <dependency>
+        <groupId>org.mycore</groupId>
+        <artifactId>mycore-base</artifactId>
+      </dependency>
+      <dependency>
+        <groupId>org.mycore</groupId>
+        <artifactId>mycore-solr</artifactId>
+      </dependency>
+      <dependency>
+        <groupId>org.mycore</groupId>
+        <artifactId>mycore-mods</artifactId>
+        <version>2025.06.1-SNAPSHOT</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.httpcomponents.client5</groupId>
+        <artifactId>httpclient5</artifactId>
+      </dependency>
+
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
