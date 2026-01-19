@@ -208,9 +208,6 @@ public class VZGPublishPicaPatchCronJob extends MCRCronjob {
     if (derLink.getMainDoc() == null) {
       return false;
     }
-    if (!derLink.getMainDoc().endsWith(".pdf")) {
-      return false;
-    }
     Set<MCRCategoryID> categories = this.getPublishableDerivateCategories();
     return derLink.getClassifications().stream().anyMatch(categories::contains);
   }
@@ -255,7 +252,7 @@ public class VZGPublishPicaPatchCronJob extends MCRCronjob {
   protected URL getPDFURL(MCRObject object) {
     try {
       return new URI(
-          MCRFrontendUtil.getBaseURL() + "rsc/fulltext/" + object.getId() + "/pdf").toURL();
+          MCRFrontendUtil.getBaseURL() + "rsc/fulltext/" + object.getId()).toURL();
     } catch (MalformedURLException | URISyntaxException e) {
       throw new MCRException(e);
     }
