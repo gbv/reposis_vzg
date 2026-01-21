@@ -246,13 +246,22 @@ public class VZGPublishPicaPatchCronJob extends MCRCronjob {
   /**
    * Get the URL of the PDF derivate from the mycore object.
    *
-   * @param object the mycore object
-   * @return the URL of the PDF derivate
+   * @param modsWrapper the mods wrapper of the mycore object
+   * @return the URL of the content derivate derivate
    */
-  protected URL getPDFURL(MCRObject object) {
+  protected URL getPDFURL(MCRMODSWrapper modsWrapper) {
     try {
-      return new URI(
-          MCRFrontendUtil.getBaseURL() + "rsc/fulltext/" + object.getId()).toURL();
+      List<String> urns = getURNS(modsWrapper);
+      Optional<String> urn = urns.stream().findFirst();
+      if (urn.isPresent()) {
+        return new URI(
+            MCRFrontendUtil.getBaseURL() + "rsc/resolve/urn/" + urn.get() + "/content").toURL();
+      } else {
+        String objId = modsWrapper.getMCRObject().getId().toString();
+        return new URI(
+            MCRFrontendUtil.getBaseURL() + "rsc/resolve/id/" + objId + "/content").toURL();
+      }
+
     } catch (MalformedURLException | URISyntaxException e) {
       throw new MCRException(e);
     }
@@ -332,7 +341,7 @@ public class VZGPublishPicaPatchCronJob extends MCRCronjob {
   public String convertToPicaPatchEntry(MCRObject obj) {
     MCRMODSWrapper modsWrapper = new MCRMODSWrapper(obj);
 
-    URL pdfurl = this.getPDFURL(obj);
+    URL pdfurl = this.getPDFURL(modsWrapper);
     String firstUrn = this.getURNS(modsWrapper).stream().findFirst().orElseThrow();
     String ppn = this.getPPN(modsWrapper).orElseThrow();
 
