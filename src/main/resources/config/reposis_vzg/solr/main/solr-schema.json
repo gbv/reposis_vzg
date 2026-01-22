@@ -1,0 +1,20 @@
+[
+  {
+    "add-dynamic-field": {
+      "name": "mods.identifier.type.*",
+      "type": "strings",
+      "multiValued": true,
+      "stored": true,
+      "indexed": true
+    }
+  },
+  {
+    "add-field": {
+      "name": "servflag.type.picaPatchPublished",
+      "type": "string",
+      "indexed": true,
+      "stored": true,
+      "multiValued": false
+    }
+  }
+]
