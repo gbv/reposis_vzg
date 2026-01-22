@@ -45,7 +45,7 @@ public class ResolveResource {
     }
   }
 
-  @Path("urn/{urn}/xml")
+  @Path("urn/{urn}/metadata")
   @GET
   public Response resolveURNXML(@PathParam("urn") String urn) {
     MCRObject object = resolveService.resolveMyCoreObjectByUrn(urn);
@@ -95,7 +95,7 @@ public class ResolveResource {
     return redirectURL;
   }
 
-  @Path("id/{id}/xml")
+  @Path("id/{id}/metadata")
   @GET
   public Response resolveIDXML(@PathParam("id") String id) {
     if (!MCRObjectID.isValid(id)) {
