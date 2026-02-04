@@ -54,7 +54,7 @@ public class VZGPublishPicaPatchCronJob extends MCRCronjob {
   public static final String PPN_PLACEHOLDER = "%PPN%";
 
   private static final String TEMPLATE =
-      " 003@ $0" + PPN_PLACEHOLDER + "\n" + "+ 004U $0" + URN_PLACEHOLDER + "\n" + "+ 017C $u"
+      "  003@ $0" + PPN_PLACEHOLDER + "\n" + "+ 004U $0" + URN_PLACEHOLDER + "\n" + "+ 017C $u"
           + FULLTEXT_PLACEHOLDER + "$xD$3Volltext$4LF$534$ADE-Ha91\n";
 
 
@@ -120,7 +120,7 @@ public class VZGPublishPicaPatchCronJob extends MCRCronjob {
       return true;
     }
 
-    String fileName = "pica_patch_" + System.currentTimeMillis() + ".txt";
+    String fileName = "pica_patch_" + System.currentTimeMillis() + ".pp";
 
     // Nextcloud Public WebDAV Upload URL
     // Format: https://nextcloud.example.com/public.php/dav/files/{share_token}/{filename}
