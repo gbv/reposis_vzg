@@ -2,37 +2,32 @@
 <!DOCTYPE MyCoReWebPage>
 <MyCoReWebPage>
 
-  <section title="Willkommen bei MIR!" xml:lang="de">
-        <div class="jumbotwo" >
-            <div class="row">
+  <section title="Willkommen bei RepoVZG" xml:lang="de">
+    <head>
+      <meta name="title" content="Willkommen bei RepoVZG – dem DMS-Service der VZG" />
+      <meta name="description" content="RepoVZG-Startseite" />
+    </head>
 
-                <div class="col-12">
-                    <h2>Mods Institutional Repository (MIR)</h2>
-                </div>
-
-                <div class="col-md-4">
-                    <h3><span class="fas fa-check"></span> fertig</h3>
-                    <p>MIR ist eine MyCoRe-Software, die mit nur wenigen Anpassungen
-                    - so wie sie ist - als Repositorium eingesetzt werden kann.</p>
-                    <p><a class="btn btn-secondary" href="https://www.mycore.de/documentation/apps/mir/mir_install/" role="button">weitere Informationen »</a></p>
-                </div>
-                <div class="col-md-4">
-                    <h3><span class="fas fa-bolt"></span> mächtig</h3>
-                    <p>MIR verwendet das mächtige und bewährte MODS-Datenmodell. Den
-                    Kern der Webanwendung bildet MyCoRe mit einer Vielzahl von Funktionen.</p>
-                    <p><a class="btn btn-secondary" href="https://www.mycore.de/site/features/" role="button">weitere Informationen »</a></p>
-                </div>
-                <div class="col-md-4">
-                    <h3><span class="fas fa-heart"></span> lebendig</h3>
-                    <p>MIR basiert auf dem Software-Kern MyCoRe, der kontinuierlich
-                    weiter entwickelt wird. Eine lebendige Community setzt MIR in
-                    ihren Anwendungen ein.</p>
-                    <p><a class="btn btn-secondary" href="https://www.mycore.de/site/community/contact/" role="button">weitere Informationen »</a></p>
-                </div>
-            </div>
-        </div>
+    <div class="row">
+      <div class="col-md-8">
+      
+      <h2>Willkommen bei RepoVZG – Dem DMS-Service der VZG!</h2>
+      <p>
+          Dieser Dienst befindet sich aktuell noch im Aufbau. Zukünftigt bietet RepoVZG den Bibliotheken eine komfortable,
+          zuverlässige und zukunftssichere Möglichkeit, PDFs zentral bereitzustellen und direkt im OPAC zu verlinken.
+      </p>
+      <p>
+          Sie profitieren von einer strukturierten, stabilen und professionell betreuten Lösung. Dokumente werden sicher
+          gespeichert, dauerhaft erreichbar gehalten und können nahtlos im Katalog angezeigt werden.
+      </p>
+      <p>
+          <strong>Modern. Zentral. Verlässlich.</strong><br />
+          Eine Lösung, die Ihre digitalen Bestände im Katalog sichtbar macht.
+      </p>
+      </div>
+    </div>
   </section>
   <meta>
-    <log date="2015-05-22" time="11:12" labelPath=" » Start" lastEditor="Kathleen Neumann" />
+    <log date="2026-05-22" time="13:02" labelPath=" » Start" lastEditor="Kathleen Neumann" />
   </meta>
 </MyCoReWebPage>
