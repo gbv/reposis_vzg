@@ -13,5 +13,14 @@
     <url-pattern>/servlets/VZGAutoImportPPNServlet</url-pattern>
   </servlet-mapping>
 
+  <servlet>
+    <servlet-name>VZGLicenseServlet</servlet-name>
+    <servlet-class>de.gbv.reposis.vzg.servlet.VZGLicenseServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>VZGLicenseServlet</servlet-name>
+    <url-pattern>/servlets/VZGLicenseServlet</url-pattern>
+  </servlet-mapping>
+
 
 </web-fragment>

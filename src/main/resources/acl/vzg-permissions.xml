@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mcrpermissions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="MCRPermissions.xsd">
+  <!-- allows editors and admins to register URNs on mods objects (workflow box) -->
+  <mcrpermission name="register-DNBURN" objectid="default_mods" ruledescription="editors and admins">
+    <condition format="xml">
+      <boolean operator="or">
+        <condition value="admin" operator="=" field="group" />
+        <condition value="editor" operator="=" field="group" />
+      </boolean>
+    </condition>
+  </mcrpermission>
+</mcrpermissions>

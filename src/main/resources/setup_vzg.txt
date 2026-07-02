@@ -1,1 +1,3 @@
 update classification from uri resource:classifications/rfc5646.xml
+update classification from uri resource:classifications/state.xml
+load permissions data from resource:acl/vzg-permissions.xml
