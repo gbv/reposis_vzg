@@ -64,6 +64,21 @@ Anforderungen sind umgesetzt:
   über das neue `VZGLicenseServlet` (benötigt Schreibrecht auf dem Objekt, wie die
   übrigen Workflow-Aktionen).
 
+### Aktionen in der Workflow-Box (Status "wird bearbeitet")
+
+* Der Reviewer (Rolle `editor`, auch `admin`) kann in diesem Status eine URN vergeben,
+  mit denselben Bedingungen wie im Status "eingereicht" (hochgeladenes Dokument, noch
+  keine URN, Rechte `writedb` und `register-DNBURN`). So kann die URN auch nachträglich
+  vergeben werden, falls das im Status "eingereicht" nicht geschehen ist.
+* Vorsichtshalber wird geprüft, ob ein Derivat mit Hauptdatei vorhanden ist. Über die
+  Workflow-Box selbst kommt ein Dokument nicht ohne Hauptdatei nach "wird bearbeitet" (der
+  `ReviewDerivateRequired`-Guard im Status "eingereicht" verhindert das), aber über das
+  Admin-Aktionsmenü (`MIR.Workflow.Menu=true`, ohne diesen Guard) oder direkt über den
+  `MIRStateServlet` genügt eine Lizenz; auch ein Derivat kann nachträglich gelöscht werden.
+  Fehlt das Dokument im Status "wird bearbeitet", erhält der Reviewer eine Warnmeldung in
+  der Gefahrenfarbe (`text-danger`). Die Statusoptionen bleiben erhalten; Publizieren ist
+  ohne Dokument ohnehin nicht möglich.
+
 ### Publizieren
 
 * Publizieren ist nur möglich, wenn ein Dokument hochgeladen wurde.

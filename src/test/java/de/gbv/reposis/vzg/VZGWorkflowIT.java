@@ -40,7 +40,9 @@ import org.openqa.selenium.support.ui.Select;
  * Tests the VZG workflow box requirements (see README section "Anforderungen Workflow"):
  * role based visibility, no edit link, delete only in submitted state, URN assignment and
  * publishing only with an uploaded document, publishing only for editors with an assigned URN
- * and an assigned license, handing over to review only with an assigned license.
+ * and an assigned license, handing over to review only with an assigned license. The reviewer
+ * can also assign the URN in the review state and is warned when a document reached review
+ * without an uploaded derivate.
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class VZGWorkflowIT extends MCRSeleniumTestBase {
@@ -73,6 +75,14 @@ public class VZGWorkflowIT extends MCRSeleniumTestBase {
     private static final By URN_OPTION = By.cssSelector(".workflow-box a[data-register-pi]");
 
     private static final By LICENSE_SELECT = By.cssSelector(".workflow-box .vzg-license-select select");
+
+    private static final By REVIEW_DERIVATE_WARNING = By.cssSelector(".workflow-box .vzg-derivate-warning");
+
+    private static final By REVIEW_TRANSITION = By.cssSelector("a[href*='newState=review']");
+
+    // matched by href because the publish label differs per source state (submitted2published is
+    // overridden by VZG, review2published comes from MIR core with a different casing)
+    private static final By PUBLISH_TRANSITION = By.cssSelector(".workflow-box a[href*='newState=published']");
 
     private static String creatorObjectURL;
 
@@ -206,6 +216,75 @@ public class VZGWorkflowIT extends MCRSeleniumTestBase {
         assertTrue("workflow box should not be shown to guests",
             driver.findElements(WORKFLOW_BOX).isEmpty());
         assertNoActionMenu();
+    }
+
+    /**
+     * A creator prepares a document (upload and license) and hands it over to review. The
+     * reviewer (editor) can then assign the URN in the review state, which unlocks publishing.
+     * No derivate warning is shown because a document was uploaded.
+     */
+    @Test
+    public void test08ReviewerAssignsUrnInReview() throws IOException, InterruptedException {
+        loginAs(CREATOR_USER, TEST_PASSWORD);
+        importPPN(true);
+        String reviewObjectURL = driver.getCurrentUrl();
+
+        reloadUntilPresent(WORKFLOW_BOX);
+        uploadTestFile();
+        reloadUntilPresent(LICENSE_SELECT);
+        selectLicense();
+
+        // with an uploaded document and a license the creator can hand the document to review
+        reloadUntilPresent(By.partialLinkText("Review"));
+        driver.findElement(By.partialLinkText("Review")).click();
+        logout();
+
+        // the reviewer sees the URN option in the review state, but publishing stays hidden
+        // until the URN is assigned, and no derivate warning is shown
+        loginAs(EDITOR_USER, TEST_PASSWORD);
+        driver.get(reviewObjectURL);
+        reloadUntilPresent(WORKFLOW_BOX);
+        driver.waitAndFindElement(URN_OPTION);
+        assertTrue("no publish option before the URN is assigned",
+            driver.findElements(PUBLISH_TRANSITION).isEmpty());
+        assertTrue("no derivate warning when a document is uploaded",
+            driver.findElements(REVIEW_DERIVATE_WARNING).isEmpty());
+
+        driver.findElement(URN_OPTION).click();
+        driver.waitFor(ExpectedConditions.visibilityOfElementLocated(By.id("modal-pi")));
+        driver.waitAndFindElement(By.id("modal-pi-add"), ExpectedConditions::elementToBeClickable).click();
+
+        reloadUntilPresent(PUBLISH_TRANSITION);
+        assertTrue("URN option should be gone after the URN was assigned",
+            driver.findElements(URN_OPTION).isEmpty());
+        logout();
+    }
+
+    /**
+     * A document can reach review without an uploaded derivate: the review transition only
+     * requires a license, and neither the admin action menu (MIR.Workflow.Menu=true) nor the
+     * MIRStateServlet enforce a main document. In that case the reviewer must be warned that no
+     * document is present, and publishing must stay hidden. Reuses the admin document from
+     * test06 (submitted, nothing uploaded).
+     */
+    @Test
+    public void test09ReviewWithoutDerivateWarnsReviewer() {
+        loginAs(ADMIN_USER, ADMIN_PASSWORD);
+        driver.get(adminObjectURL);
+        reloadUntilPresent(LICENSE_SELECT);
+        selectLicense();
+
+        // the review transition shows up in the admin action menu once a license is set; it is
+        // not guarded by a main document there, so follow it to move the document into review
+        reloadUntilPresent(REVIEW_TRANSITION);
+        driver.get(driver.findElement(REVIEW_TRANSITION).getDomProperty("href"));
+
+        reloadUntilPresent(REVIEW_DERIVATE_WARNING);
+        assertTrue("no publish option without an uploaded document",
+            driver.findElements(PUBLISH_TRANSITION).isEmpty());
+        assertTrue("no URN option without an uploaded document",
+            driver.findElements(URN_OPTION).isEmpty());
+        logout();
     }
 
     @After

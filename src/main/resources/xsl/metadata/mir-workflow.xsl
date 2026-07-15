@@ -95,22 +95,11 @@
   <xsl:template name="submittedWorkflowBox">
     <xsl:param name="messageKey"/>
     <xsl:if test="key('rights', @ID)/@write">
-      <xsl:variable name="urnServices"
-                    select="piUtil:getPIServiceInformation($id)[@type='dnbUrn' and @permission='true' and @inscribed='false']"/>
       <xsl:variable name="message">
         <p>
           <xsl:value-of select="i18n:translate($messageKey)"/>
           <ul>
-            <xsl:if test="structure/derobjects/derobject/maindoc[normalize-space()]">
-              <xsl:for-each select="$urnServices">
-                <li>
-                  <a href="#" data-type="{@type}" data-mycoreID="{$id}"
-                     data-baseURL="{$WebApplicationBaseURL}" data-register-pi="{@id}">
-                    <xsl:value-of select="i18n:translate(concat('component.pi.register.',@id))"/>
-                  </a>
-                </li>
-              </xsl:for-each>
-            </xsl:if>
+            <xsl:call-template name="urnRegisterOptions"/>
             <xsl:apply-templates select="." mode="creatorSubmittedAdd" />
             <xsl:call-template name="licenseSelect"/>
             <xsl:choose>
@@ -156,35 +145,7 @@
       <xsl:if test="normalize-space($MIR.Workflow.PDFValidation)='true'">
         <xsl:apply-templates select="." mode="displayPdfError"/>
       </xsl:if>
-      <!-- the action menu (mir-edit.xsl) renders this modal for admins only, so provide it here for other roles -->
-      <xsl:if
-        test="$urnServices and structure/derobjects/derobject/maindoc[normalize-space()] and not(mcrxml:isCurrentUserInRole('admin'))">
-        <div class="modal fade" id="modal-pi" tabindex="-1" role="dialog" data-backdrop="static">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h4 class="modal-title" data-i18n="component.pi.register."></h4>
-              </div>
-              <div class="modal-body">
-                <div class="row">
-                  <div class="col-md-2">
-                    <i class="fas fa-question-circle"></i>
-                  </div>
-                  <div class="col-md-10" data-i18n="component.pi.register.modal.text."></div>
-                </div>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary modal-pi-cancel" data-bs-dismiss="modal">
-                  <xsl:value-of select="i18n:translate('component.pi.register.modal.abort')" />
-                </button>
-                <button type="button" class="btn btn-danger" id="modal-pi-add"
-                        data-i18n="component.pi.register.">
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </xsl:if>
+      <xsl:call-template name="piModalForNonAdmin"/>
     </xsl:if>
   </xsl:template>
 
@@ -220,8 +181,16 @@
       <p>
         <xsl:value-of select="i18n:translate('mir.workflow.editor.review')" />
         <ul>
+          <xsl:call-template name="urnRegisterOptions"/>
           <xsl:apply-templates select="." mode="editorReviewAdd" />
           <xsl:call-template name="licenseSelect"/>
+          <!-- guard against a document that was handed over to review without an uploaded
+               derivate/main document, the reviewer gets a warning but keeps the status options -->
+          <xsl:if test="not(structure/derobjects/derobject/maindoc[normalize-space()])">
+            <li class="text-danger vzg-derivate-warning">
+              <xsl:value-of select="i18n:translate('vzg.workflow.review.require.derivate')"/>
+            </li>
+          </xsl:if>
           <xsl:call-template name="listStatusChangeOptions">
             <xsl:with-param name="class" select="''" />
           </xsl:call-template>
@@ -232,6 +201,61 @@
       <xsl:with-param name="content" select="exslt:node-set($message)" />
       <xsl:with-param name="heading" select="''" />
     </xsl:call-template>
+    <xsl:call-template name="piModalForNonAdmin"/>
+  </xsl:template>
+
+
+  <!-- renders the URN register options, shared by the submitted and the review state box;
+       the register link only shows when a main document was uploaded and an unregistered
+       URN service is available -->
+  <xsl:template name="urnRegisterOptions">
+    <xsl:if test="structure/derobjects/derobject/maindoc[normalize-space()]">
+      <xsl:for-each
+        select="piUtil:getPIServiceInformation($id)[@type='dnbUrn' and @permission='true' and @inscribed='false']">
+        <li>
+          <a href="#" data-type="{@type}" data-mycoreID="{$id}"
+             data-baseURL="{$WebApplicationBaseURL}" data-register-pi="{@id}">
+            <xsl:value-of select="i18n:translate(concat('component.pi.register.',@id))"/>
+          </a>
+        </li>
+      </xsl:for-each>
+    </xsl:if>
+  </xsl:template>
+
+
+  <!-- the action menu (mir-edit.xsl) renders the URN confirmation modal for admins only, so
+       provide it here for the other roles that assign the URN through the workflow box -->
+  <xsl:template name="piModalForNonAdmin">
+    <xsl:variable name="urnServices"
+                  select="piUtil:getPIServiceInformation($id)[@type='dnbUrn' and @permission='true' and @inscribed='false']"/>
+    <xsl:if
+      test="$urnServices and structure/derobjects/derobject/maindoc[normalize-space()] and not(mcrxml:isCurrentUserInRole('admin'))">
+      <div class="modal fade" id="modal-pi" tabindex="-1" role="dialog" data-backdrop="static">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title" data-i18n="component.pi.register."></h4>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-md-2">
+                  <i class="fas fa-question-circle"></i>
+                </div>
+                <div class="col-md-10" data-i18n="component.pi.register.modal.text."></div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary modal-pi-cancel" data-bs-dismiss="modal">
+                <xsl:value-of select="i18n:translate('component.pi.register.modal.abort')" />
+              </button>
+              <button type="button" class="btn btn-danger" id="modal-pi-add"
+                      data-i18n="component.pi.register.">
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </xsl:if>
   </xsl:template>
 
 
