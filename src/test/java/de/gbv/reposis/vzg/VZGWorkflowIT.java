@@ -189,13 +189,13 @@ public class VZGWorkflowIT extends MCRSeleniumTestBase {
     }
 
     /**
-     * The published document with an assigned URN is exposed as EPICUR through the dedicated OAI set.
+     * The published document with an assigned URN is exposed as EPICUR through the URN OAI set.
      */
     @Test
-    public void test06PublishedUrnObjectIsExposedViaEpicurSet() throws IOException, InterruptedException {
+    public void test06PublishedUrnObjectIsExposedViaUrnSet() throws IOException, InterruptedException {
         String objectId = creatorObjectURL.substring(creatorObjectURL.lastIndexOf('/') + 1);
         String oaiRequest = getAppURL() + "/servlets/OAIDataProvider"
-            + "?verb=ListRecords&metadataPrefix=epicur&set=epicur";
+            + "?verb=ListRecords&metadataPrefix=epicur&set=urn";
         HttpClient client = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(10)).build();
         HttpRequest request = HttpRequest.newBuilder(URI.create(oaiRequest)).timeout(Duration.ofSeconds(30)).build();
 
@@ -212,7 +212,7 @@ public class VZGWorkflowIT extends MCRSeleniumTestBase {
             Thread.sleep(2000);
         }
 
-        assertTrue("published object with URN should be included in the EPICUR OAI set: " + responseBody,
+        assertTrue("published object with URN should be included in the URN OAI set: " + responseBody,
             responseBody.contains(objectId));
         assertTrue("OAI record should contain EPICUR metadata: " + responseBody,
             responseBody.contains("urn:nbn:de:1111-2004033116"));

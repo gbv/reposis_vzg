@@ -22,7 +22,7 @@ MCR.SASS.DeveloperMode=true
 Umgebung (Solr, Tomcat, MIR-Webapp): Nutzeranlage über die Oberfläche, PPN-Import,
 Volltext-Upload, URN-Vergabe und Publizieren, je Rolle (Admin, Editor, Creator, Gast).
 Nach der Publikation wird zusätzlich geprüft, dass das Dokument über das OAI-Set
-`epicur` als EPICUR-Datensatz ausgeliefert wird.
+`urn` als EPICUR-Datensatz ausgeliefert wird.
 
 ```
 CI=true SELENIUM_HEADLESS=true mvn clean install
@@ -39,7 +39,7 @@ Hinweise:
 
 ## OAI-Harvesting von URNs
 
-Das OAI-Set `epicur` enthält ausschließlich publizierte Objekte mit einer vergebenen
+Das OAI-Set `urn` enthält ausschließlich publizierte Objekte mit einer vergebenen
 URN. Die Zuordnung erfolgt über die Solr-Abfrage
 `mods.identifier.type.urn:* AND state:published`. Dadurch werden Objekte ohne URN,
 für die keine EPICUR-Transformation möglich ist, nicht an die DNB ausgeliefert.
@@ -47,7 +47,7 @@ für die keine EPICUR-Transformation möglich ist, nicht an die DNB ausgeliefert
 Beispiel für ein inkrementelles Harvesting:
 
 ```
-servlets/OAIDataProvider?verb=ListRecords&metadataPrefix=epicur&set=epicur&from=2026-07-31&until=2026-08-16
+servlets/OAIDataProvider?verb=ListRecords&metadataPrefix=epicur&set=urn&from=2026-07-31&until=2026-08-16
 ```
 
 ## Anforderungen Workflow
