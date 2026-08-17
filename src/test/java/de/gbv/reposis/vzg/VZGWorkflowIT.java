@@ -23,8 +23,13 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.time.Duration;
 
 import org.junit.After;
 import org.junit.FixMethodOrder;
@@ -184,11 +189,41 @@ public class VZGWorkflowIT extends MCRSeleniumTestBase {
     }
 
     /**
+     * The published document with an assigned URN is exposed as EPICUR through the dedicated OAI set.
+     */
+    @Test
+    public void test06PublishedUrnObjectIsExposedViaEpicurSet() throws IOException, InterruptedException {
+        String objectId = creatorObjectURL.substring(creatorObjectURL.lastIndexOf('/') + 1);
+        String oaiRequest = getAppURL() + "/servlets/OAIDataProvider"
+            + "?verb=ListRecords&metadataPrefix=epicur&set=epicur";
+        HttpClient client = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(10)).build();
+        HttpRequest request = HttpRequest.newBuilder(URI.create(oaiRequest)).timeout(Duration.ofSeconds(30)).build();
+
+        String responseBody = "";
+        for (int i = 0; i < 15; i++) {
+            HttpResponse<String> response = client.send(request,
+                HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8));
+            assertEquals("OAI request should succeed", 200, response.statusCode());
+            responseBody = response.body();
+            if (responseBody.contains(objectId)
+                && responseBody.contains("urn:nbn:de:1111-2004033116")) {
+                break;
+            }
+            Thread.sleep(2000);
+        }
+
+        assertTrue("published object with URN should be included in the EPICUR OAI set: " + responseBody,
+            responseBody.contains(objectId));
+        assertTrue("OAI record should contain EPICUR metadata: " + responseBody,
+            responseBody.contains("urn:nbn:de:1111-2004033116"));
+    }
+
+    /**
      * Admin imports a second document (duplicate check must show up) and must not get
      * a publish option anywhere as long as no document is uploaded.
      */
     @Test
-    public void test06AdminWithoutUploadCannotPublish() {
+    public void test07AdminWithoutUploadCannotPublish() {
         loginAs(ADMIN_USER, ADMIN_PASSWORD);
         importPPN(true);
         adminObjectURL = driver.getCurrentUrl();
@@ -210,7 +245,7 @@ public class VZGWorkflowIT extends MCRSeleniumTestBase {
      * Guests get neither the workflow box nor the action menu.
      */
     @Test
-    public void test07GuestSeesNoWorkflowActions() {
+    public void test08GuestSeesNoWorkflowActions() {
         driver.get(creatorObjectURL);
         driver.waitFor(ExpectedConditions.titleContains(TITLE_PART));
         assertTrue("workflow box should not be shown to guests",
@@ -224,7 +259,7 @@ public class VZGWorkflowIT extends MCRSeleniumTestBase {
      * No derivate warning is shown because a document was uploaded.
      */
     @Test
-    public void test08ReviewerAssignsUrnInReview() throws IOException, InterruptedException {
+    public void test09ReviewerAssignsUrnInReview() throws IOException, InterruptedException {
         loginAs(CREATOR_USER, TEST_PASSWORD);
         importPPN(true);
         String reviewObjectURL = driver.getCurrentUrl();
@@ -265,10 +300,10 @@ public class VZGWorkflowIT extends MCRSeleniumTestBase {
      * requires a license, and neither the admin action menu (MIR.Workflow.Menu=true) nor the
      * MIRStateServlet enforce a main document. In that case the reviewer must be warned that no
      * document is present, and publishing must stay hidden. Reuses the admin document from
-     * test06 (submitted, nothing uploaded).
+     * test07 (submitted, nothing uploaded).
      */
     @Test
-    public void test09ReviewWithoutDerivateWarnsReviewer() {
+    public void test10ReviewWithoutDerivateWarnsReviewer() {
         loginAs(ADMIN_USER, ADMIN_PASSWORD);
         driver.get(adminObjectURL);
         reloadUntilPresent(LICENSE_SELECT);
